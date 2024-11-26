@@ -14,7 +14,40 @@ The Bank Account Management System is a Spring Boot application designed to mana
 ## Project Structure
 
 ```
-CC-BANK/ ├── src/ │ ├── main/ │ │ ├── java/ │ │ │ └── com/ │ │ │ └── code_compilers/ │ │ │ └── CC_BANK/ │ │ │ ├── BankApplication.java│ │ │ ├── controller/ │ │ │ │ ├── HomeController.java│ │ │ │ ├── AccountController.java│ │ │ ├── model/ │ │ │ │ ├── Account.java│ │ │ │ ├── CheckingAccount.java│ │ │ │ ├── SavingsAccount.java│ │ │ ├── repository/ │ │ │ │ ├── AccountRepository.java│ │ ├── resources/ │ │ │ ├── application.properties│ │ │ ├── templates/ │ │ │ │ ├── index.html│ │ │ │ ├── account.html│ │ │ │ ├── accounts.html│ │ │ │ ├── transfer.html│ │ │ ├── static/ │ │ │ ├── css/ │ │ │ └── style.css│ ├── test/ │ │ ├── java/ │ │ │ └── com/ │ │ │ └── code_compilers/ │ │ │ └── CC_BANK/ │ │ │ ├── BankApplicationTests.java└── pom.xml
+CC-BANK/
+├── src/
+│ ├── main/
+│ │ ├── java/
+│ │ │ └── com/
+│ │ │ └── code_compilers/
+│ │ │ └── CC_BANK/
+│ │ │ ├── BankApplication.java
+│ │ │ ├── controller/
+│ │ │ │ ├── HomeController.java
+│ │ │ │ ├── AccountController.java
+│ │ │ ├── model/
+│ │ │ │ ├── Account.java
+│ │ │ │ ├── CheckingAccount.java
+│ │ │ │ ├── SavingsAccount.java
+│ │ │ ├── repository/
+│ │ │ │ ├── AccountRepository.java
+│ │ ├── resources/
+│ │ │ ├── application.properties
+│ │ │ ├── templates/
+│ │ │ │ ├── index.html
+│ │ │ │ ├── account.html
+│ │ │ │ ├── accounts.html
+│ │ │ │ ├── transfer.html
+│ │ │ ├── static/
+│ │ │ ├── css/
+│ │ │ └── style.css
+│ ├── test/
+│ │ ├── java/
+│ │ │ └── com/
+│ │ │ └── code_compilers/
+│ │ │ └── CC_BANK/
+│ │ │ ├── BankApplicationTests.java
+└── pom.xml
 ```
 
 ## Setup and Installation
