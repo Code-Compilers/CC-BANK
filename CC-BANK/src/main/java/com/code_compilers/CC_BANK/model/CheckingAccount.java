@@ -1,23 +1,19 @@
 package com.code_compilers.CC_BANK.model;
 
-public class CheckingAccount {
-    private String id;
-    private double balance;
+
+import jakarta.persistence.Entity;
+
+@Entity
+public class CheckingAccount extends Account {
+
+    private double overdraftLimit;
 
     // Getters and Setters
-    public String getId() {
-        return id;
+    public double getOverdraftLimit() {
+        return overdraftLimit;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
+    public void setOverdraftLimit(double overdraftLimit) {
+        this.overdraftLimit = overdraftLimit;
     }
 }

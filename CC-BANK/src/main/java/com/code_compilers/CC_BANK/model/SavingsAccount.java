@@ -1,23 +1,20 @@
 package com.code_compilers.CC_BANK.model;
 
-public class SavingsAccount {
-    private String id;
-    private double balance;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "savings_accounts")
+public class SavingsAccount extends Account {
+
+    private double interestRate;
 
     // Getters and Setters
-    public String getId() {
-        return id;
+    public double getInterestRate() {
+        return interestRate;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
+    public void setInterestRate(double interestRate) {
+        this.interestRate = interestRate;
     }
 }
