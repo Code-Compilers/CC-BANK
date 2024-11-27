@@ -48,4 +48,31 @@ public class AccountService {
     public List<Account> getAllAccounts() {
         return accountRepository.findAll();
     }
+
+    public void transferFunds(Long fromAccountId, Long toAccountId, double amount) {
+        // Fetch source and destination accounts
+        Account fromAccount = accountRepository.findById(fromAccountId)
+                .orElseThrow(() -> new AccountNotFoundException("Source account not found"));
+        Account toAccount = accountRepository.findById(toAccountId)
+                .orElseThrow(() -> new AccountNotFoundException("Destination account not found"));
+
+        // Ensure accounts are not the same
+        if (fromAccountId.equals(toAccountId)) {
+            throw new IllegalArgumentException("Cannot transfer to the same account");
+        }
+
+        // Validate sufficient funds in the source account
+        if (fromAccount.getBalance() < amount) {
+            throw new InsufficientFundsException("Insufficient balance in source account");
+        }
+
+        // Update balances
+        fromAccount.setBalance(fromAccount.getBalance() - amount);
+        toAccount.setBalance(toAccount.getBalance() + amount);
+
+        // Save updated accounts
+        accountRepository.save(fromAccount);
+        accountRepository.save(toAccount);
+    }
+
 }

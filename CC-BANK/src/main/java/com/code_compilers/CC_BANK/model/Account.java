@@ -13,6 +13,9 @@ public abstract class Account {
     private String cellNumber;
     private double balance;
     private String pin;
+    private String accountType;
+
+
 
     // Getters and Setters
     public Long getId() {
@@ -61,6 +64,14 @@ public abstract class Account {
 
     public void setPin(String pin) {
         this.pin = pin;
+    }
+
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
     }
 }
 

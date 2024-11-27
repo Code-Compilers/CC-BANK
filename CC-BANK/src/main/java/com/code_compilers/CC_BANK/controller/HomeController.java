@@ -15,7 +15,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("accounts", accountService.getAllAccounts());
+        model.addAttribute("accounts");
         return "index";
     }
 }
