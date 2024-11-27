@@ -1,11 +1,14 @@
 package com.code_compilers.CC_BANK.service;
 
-
+import com.code_compilers.CC_BANK.exception.InsufficientFundsException;
+import com.code_compilers.CC_BANK.model.Account;
+import com.code_compilers.CC_BANK.model.User;
 import com.code_compilers.CC_BANK.respository.AccountRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import javax.security.auth.login.AccountNotFoundException;
 
 @Service
 public class AccountService {
@@ -13,49 +16,20 @@ public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
-    @Autowired
-    private TransactionRepository transactionRepository;
+    @Transactional
+    public String transferFunds(User user, double amount, String fromAccountType, String toAccountType) throws InsufficientFundsException, AccountNotFoundException {
+        Account fromAccount = accountRepository.findByUserAndAccountType(user, fromAccountType)
+                .orElseThrow(() -> new AccountNotFoundException(fromAccountType + " account not found"));
 
-    public void transferFunds(String fromAccountNumber, String toAccountNumber, double amount) {
-        if (amount <= 0) {
-            throw new IllegalArgumentException("Transfer amount must be greater than zero");
-        }
+        Account toAccount = accountRepository.findByUserAndAccountType(user, toAccountType)
+                .orElseThrow(() -> new AccountNotFoundException(toAccountType + " account not found"));
 
-        // Fetch the accounts
-        Optional<Account> fromAccountOpt = accountRepository.findByAccountNumber(fromAccountNumber);
-        Optional<Account> toAccountOpt = accountRepository.findByAccountNumber(toAccountNumber);
+        fromAccount.withdraw(amount); // Withdraw from the source account
+        toAccount.deposit(amount);    // Deposit into the target account
 
-        if (fromAccountOpt.isEmpty() || toAccountOpt.isEmpty()) {
-            throw new IllegalArgumentException("Invalid account number(s)");
-        }
+        accountRepository.save(fromAccount); // Save updated from account
+        accountRepository.save(toAccount);   // Save updated to account
 
-        Account fromAccount = fromAccountOpt.get();
-        Account toAccount = toAccountOpt.get();
-
-        // Validate sufficient balance
-        if (fromAccount.getBalance() < amount) {
-            throw new IllegalArgumentException("Insufficient funds in account: " + fromAccountNumber);
-        }
-
-        // Perform the transfer
-        fromAccount.setBalance(fromAccount.getBalance() - amount);
-        toAccount.setBalance(toAccount.getBalance() + amount);
-
-        // Save updated accounts
-        accountRepository.save(fromAccount);
-        accountRepository.save(toAccount);
-
-        // Record transactions
-        Transaction fromTransaction = new Transaction();
-        fromTransaction.setAccount(fromAccount);
-        fromTransaction.setType("transfer");
-        fromTransaction.setAmount(-amount);
-        transactionRepository.save(fromTransaction);
-
-        Transaction toTransaction = new Transaction();
-        toTransaction.setAccount(toAccount);
-        toTransaction.setType("transfer");
-        toTransaction.setAmount(amount);
-        transactionRepository.save(toTransaction);
+        return "Transfer successful!";
     }
 }

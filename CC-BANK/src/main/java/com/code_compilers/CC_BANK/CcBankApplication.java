@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class CcBankApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(CcBankApplication.class, args);
 	}
 

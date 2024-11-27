@@ -1,32 +1,46 @@
-
 package com.code_compilers.CC_BANK.controller;
 
-import com.code_compilers.CC_BANK.model.TransferRequest;
+import com.code_compilers.CC_BANK.exception.AccountNotFoundException;
+import com.code_compilers.CC_BANK.exception.InsufficientFundsException;
+import com.code_compilers.CC_BANK.exception.UserNotFoundException;
+import com.code_compilers.CC_BANK.model.User;
+import com.code_compilers.CC_BANK.respository.UserRepository;
 import com.code_compilers.CC_BANK.service.AccountService;
-import org.springframework.web.bind.annotation.RestController;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-@RestController
-@RequestMapping()
+import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.security.Principal;
+
+
+@Controller
 public class AccountController {
 
-    @Autowired
-    private AccountService accountService;
+        @Autowired
+        private AccountService accountService;
 
-    @PostMapping("/transfer")
-    public ResponseEntity<String> transferFunds(
-            @RequestParam String fromAccountNumber,
-            @RequestParam String toAccountNumber,
-            @RequestParam double amount) {
-        try {
-            accountService.transferFunds(fromAccountNumber, toAccountNumber, amount);
-            return ResponseEntity.ok("Transfer successful");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("An error occurred during the transfer");
+        @PostMapping("/transfer")
+        public String transfer(@RequestParam double amount,
+                               @RequestParam String fromAccountType,
+                               @RequestParam String toAccountType,
+                               Principal principal) {
+            User user = getUserFromPrincipal(principal); // Assuming a method that retrieves the user from the authenticated principal
+
+            try {
+                String result = accountService.transferFunds(user, amount, fromAccountType, toAccountType);
+                return "redirect:/dashboard?success=" + result;
+            } catch (AccountNotFoundException | InsufficientFundsException e) {
+                return "redirect:/dashboard?error=" + e.getMessage();
+            }
+        }
+
+        private User getUserFromPrincipal(Principal principal) {
+            // Get the user based on the authenticated principal
+
+            return UserRepository.findByUsername(principal.getName()).orElseThrow(() -> new UserNotFoundException("User not found"));
         }
     }
-}
+
+

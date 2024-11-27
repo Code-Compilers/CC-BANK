@@ -1,33 +1,23 @@
 package com.code_compilers.CC_BANK.model;
 
-import jakarta.persistence.*;
+import com.code_compilers.CC_BANK.exception.InsufficientFundsException;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
+public abstract class Account {
+    private Long id;
+    private double balance;
 
-@Entity
-@Table(name = "accounts")
-public class Account {
+    public double getBalance() {
+        return balance;
+    }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int accountId;
+    public void deposit(double amount) {
+        this.balance += amount;
+    }
 
-    @Column(name = "user_id", nullable = false)
-    private int userId;
-
-    @Column(name = "account_number", nullable = false, unique = true)
-    private String accountNumber;
-
-    @Column(name = "balance", nullable = false)
-    private BigDecimal balance;
-
-    @Column(name = "account_type", nullable = false)
-    private String accountType;
-
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private Timestamp createdAt;
-
-    // Getters and Setters
-    // ...
+    public void withdraw(double amount) throws InsufficientFundsException {
+        if (balance < amount) {
+            throw new InsufficientFundsException("Insufficient funds.");
+        }
+        this.balance -= amount;
+    }
 }
