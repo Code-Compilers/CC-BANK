@@ -66,30 +66,7 @@ CC-BANK/
     ```
 
 2. **Create the Database**:
-    Use MySQL Workbench or another MySQL client to execute the following SQL commands:
-    ```sql
-    CREATE DATABASE ccbank;
-    USE ccbank;
-
-    CREATE TABLE accounts (
-        id BIGINT AUTO_INCREMENT PRIMARY KEY,
-        owner VARCHAR(100) NOT NULL,
-        balance DOUBLE NOT NULL,
-        account_type VARCHAR(20) NOT NULL CHECK (account_type IN ('CheckingAccount', 'SavingsAccount'))
-    );
-
-    CREATE TABLE checking_accounts (
-        id BIGINT PRIMARY KEY,
-        overdraft_limit DOUBLE NOT NULL,
-        FOREIGN KEY (id) REFERENCES accounts(id)
-    );
-
-    CREATE TABLE savings_accounts (
-        id BIGINT PRIMARY KEY,
-        interest_rate DOUBLE NOT NULL,
-        FOREIGN KEY (id) REFERENCES accounts(id)
-    );
-    ```
+   The sql command are linked to the system. When u run the project the tables will be automatically added. 
 
 3. **Configure the Application**:
     Open `src/main/resources/application.properties` and set your MySQL credentials:
