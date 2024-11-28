@@ -15,8 +15,6 @@ public abstract class Account {
     private String pin;
     private String accountType;
 
-
-
     // Getters and Setters
     public Long getId() {
         return id;
@@ -74,4 +72,3 @@ public abstract class Account {
         this.accountType = accountType;
     }
 }
-

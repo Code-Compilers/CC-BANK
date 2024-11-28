@@ -5,7 +5,6 @@ import com.code_compilers.CC_BANK.model.CheckingAccount;
 import com.code_compilers.CC_BANK.model.SavingsAccount;
 import com.code_compilers.CC_BANK.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -59,7 +58,6 @@ public class AccountController {
         Account account;
         try {
             account = accountService.accessAccount(identifier, pin);
-
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", "Invalid account number/email or PIN");
             return "index";
@@ -68,18 +66,11 @@ public class AccountController {
         return "account";
     }
 
-
-  //samuel
-
-    @PostMapping("/transfer")
-    public ResponseEntity<String> transferFunds(
-            @RequestParam Long fromAccountId,
-            @RequestParam Long toAccountId,
-            @RequestParam double amount) {
-
-        accountService.transferFunds(fromAccountId, toAccountId, amount);
-        return ResponseEntity.ok("Transfer successful");}
-}
+    @PostMapping("/{id}/delete")
+    public String deleteAccount(@PathVariable Long id, @RequestParam String pin, Model model) {
+        accountService.deleteAccount(id, pin);
+        return "redirect:/";
+    }
 
     @PostMapping("/{id}/deposit")
     public String deposit(@PathVariable Long id, @RequestParam double amount, @RequestParam String pin, Model model) {
@@ -88,16 +79,21 @@ public class AccountController {
         return "account";
     }
 
-    @PostMapping("/{id}/delete")
+    @PostMapping("/{id}/withdraw")
+    public String withdraw(@PathVariable Long id, @RequestParam double amount, @RequestParam String pin, Model model) {
+        Account account = accountService.withdraw(id, amount, pin);
+        model.addAttribute("account", account);
+        return "account";
+    }
 
-    public String deleteAccount(@PathVariable Long id, @RequestParam String pin, Model model) {
-
-        accountService.deleteAccount(id, pin);
-
-        return "redirect:/";
-
+    @PostMapping("/transfer")
+    public String transfer(@RequestParam Long fromId, @RequestParam Long toId, @RequestParam double amount, @RequestParam String pin, Model model) {
+        accountService.transfer(fromId, toId, amount, pin);
+        Account fromAccount = accountService.getAccount(fromId, pin);
+        Account toAccount = accountService.getAccount(toId, pin);
+        model.addAttribute("fromAccount", fromAccount);
+        model.addAttribute("toAccount", toAccount);
+        return "transfer";
     }
 
 }
-
-
