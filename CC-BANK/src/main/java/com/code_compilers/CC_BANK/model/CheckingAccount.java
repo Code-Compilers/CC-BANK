@@ -19,9 +19,10 @@ public class CheckingAccount extends Account {
         return "CheckingAccount{" +
                 "id=" + getId() +
                 ", owner='" + getOwner() + '\'' +
-                ", balance=" + getChequeBalance() +
+                ", balance=" + getBalance() +
                 ", overdraftLimit=" + overdraftLimit +
                 '}';
     }
 }
+
 
