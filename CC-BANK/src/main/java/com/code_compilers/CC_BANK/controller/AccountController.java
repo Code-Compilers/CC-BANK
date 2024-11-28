@@ -73,5 +73,15 @@ public class AccountController {
         return "account";
     }
 
+    @PostMapping("/{id}/delete")
+
+    public String deleteAccount(@PathVariable Long id, @RequestParam String pin, Model model) {
+
+        accountService.deleteAccount(id, pin);
+
+        return "redirect:/";
+
+    }
+
 }
 

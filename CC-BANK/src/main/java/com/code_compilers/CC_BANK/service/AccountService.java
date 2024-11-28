@@ -50,6 +50,16 @@ public class AccountService {
     }
 
     @Transactional
+
+    public void deleteAccount(Long id, String pin) {
+
+        Account account = getAccount(id, pin);
+
+        accountRepository.delete(account);
+
+    }
+
+    @Transactional
     public Account deposit(Long id, double amount, String pin) {
         Account account = getAccount(id, pin);
         account.setBalance(account.getBalance() + amount);
