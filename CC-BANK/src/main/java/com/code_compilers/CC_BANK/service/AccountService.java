@@ -15,7 +15,7 @@ import java.util.Optional;
 public class AccountService {
 
     @Autowired
-    private AccountRepository accountRepository;
+    private static AccountRepository accountRepository;
 
     @Transactional
     public Account createAccount(Account account) {
@@ -35,7 +35,7 @@ public class AccountService {
     }
 
     @Transactional
-    public Account getAccount(Long id, String pin) {
+    public static Account getAccount(Long id, String pin) {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new AccountNotFoundException("Account not found"));
         if (!account.getPin().equals(pin)) {
@@ -52,17 +52,17 @@ public class AccountService {
     @Transactional
     public Account deposit(Long id, double amount, String pin) {
         Account account = getAccount(id, pin);
-        account.setBalance(account.getBalance() + amount);
+        account.setSavingsBalance(account.getSavingsBalance() + amount);
         return accountRepository.save(account);
     }
 
     @Transactional
-    public Account withdraw(Long id, double amount, String pin) {
+    public static Account withdraw(Long id, double amount, String pin) {
         Account account = getAccount(id, pin);
-        if (account.getBalance() < amount) {
+        if (account.getSavingsBalance() < amount) {
             throw new InsufficientFundsException("Insufficient funds for withdrawal");
         }
-        account.setBalance(account.getBalance() - amount);
+        account.setSavingsBalance(account.getSavingsBalance() - amount);
         return accountRepository.save(account);
     }
 
@@ -71,7 +71,7 @@ public class AccountService {
         withdraw(fromId, amount, pin);
         Account toAccount = accountRepository.findById(toId)
                 .orElseThrow(() -> new AccountNotFoundException("Account not found"));
-        toAccount.setBalance(toAccount.getBalance() + amount);
+        toAccount.setSavingsBalance(toAccount.getSavingsBalance() + amount);
         accountRepository.save(toAccount);
     }
 
