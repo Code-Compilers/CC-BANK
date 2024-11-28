@@ -66,7 +66,6 @@ public class AccountController {
         return "account";
     }
 
-
     @PostMapping("/{id}/deposit")
     public String deposit(@PathVariable Long id, @RequestParam double amount, @RequestParam String pin, Model model) {
         Account account = accountService.deposit(id, amount, pin);
@@ -75,3 +74,4 @@ public class AccountController {
     }
 
 }
+
