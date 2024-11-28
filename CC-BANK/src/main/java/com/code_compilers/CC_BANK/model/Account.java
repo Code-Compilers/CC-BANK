@@ -11,11 +11,18 @@ public abstract class Account {
     private String owner;
     private String email;
     private String cellNumber;
-    private double balance;
+    private double SavingsBalance;
+    private double chequeBalance;
     private String pin;
     private String accountType;
 
     // Getters and Setters
+    public double getChequeBalance() {
+        return chequeBalance;
+    }
+    public void setChequeBalance(double chequeBalance) {
+        this.chequeBalance = chequeBalance;
+    }
     public Long getId() {
         return id;
     }
@@ -48,12 +55,12 @@ public abstract class Account {
         this.cellNumber = cellNumber;
     }
 
-    public double getBalance() {
-        return balance;
+    public double getSavingsBalance() {
+        return SavingsBalance;
     }
 
-    public void setBalance(double balance) {
-        this.balance = balance;
+    public void setSavingsBalance(double savingsBalance) {
+        this.SavingsBalance = savingsBalance;
     }
 
     public String getPin() {
