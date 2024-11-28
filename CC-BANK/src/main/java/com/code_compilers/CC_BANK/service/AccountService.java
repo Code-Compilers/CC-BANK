@@ -24,7 +24,7 @@ public class AccountService {
 
     @Transactional
     public Account accessAccount(String identifier, String pin) {
-        Account account = accountRepository.findByEmail(identifier)
+        /*Account account = accountRepository.findByEmail(identifier)
                 .or(() -> accountRepository.findById(Long.parseLong(identifier)))
                 .orElseThrow(() -> new AccountNotFoundException("Account not found"));
 
@@ -32,6 +32,10 @@ public class AccountService {
             throw new IllegalArgumentException("Invalid PIN");
         }
         return account;
+        return account;*/
+        return accountRepository.findByEmail(identifier, pin)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
+
     }
 
     @Transactional
