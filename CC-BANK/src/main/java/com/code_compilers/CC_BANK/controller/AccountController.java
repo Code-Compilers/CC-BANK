@@ -68,6 +68,7 @@ public class AccountController {
         return "account";
     }
 
+
   //samuel
 
     @PostMapping("/transfer")
@@ -79,3 +80,24 @@ public class AccountController {
         accountService.transferFunds(fromAccountId, toAccountId, amount);
         return ResponseEntity.ok("Transfer successful");}
 }
+
+    @PostMapping("/{id}/deposit")
+    public String deposit(@PathVariable Long id, @RequestParam double amount, @RequestParam String pin, Model model) {
+        Account account = accountService.deposit(id, amount, pin);
+        model.addAttribute("account", account);
+        return "account";
+    }
+
+    @PostMapping("/{id}/delete")
+
+    public String deleteAccount(@PathVariable Long id, @RequestParam String pin, Model model) {
+
+        accountService.deleteAccount(id, pin);
+
+        return "redirect:/";
+
+    }
+
+}
+
+

@@ -49,6 +49,7 @@ public class AccountService {
         return accountRepository.findAll();
     }
 
+<<<<<<< HEAD
     public void transferFunds(Long fromAccountId, Long toAccountId, double amount) {
         // Fetch source and destination accounts
         Account fromAccount = accountRepository.findById(fromAccountId)
@@ -76,3 +77,24 @@ public class AccountService {
     }
 
 }
+=======
+    @Transactional
+
+    public void deleteAccount(Long id, String pin) {
+
+        Account account = getAccount(id, pin);
+
+        accountRepository.delete(account);
+
+    }
+
+    @Transactional
+    public Account deposit(Long id, double amount, String pin) {
+        Account account = getAccount(id, pin);
+        account.setBalance(account.getBalance() + amount);
+        return accountRepository.save(account);
+    }
+
+}
+
+>>>>>>> 14e2f0644551e9149b62773fefc9fd1f7d38e722
