@@ -77,6 +77,5 @@ public class AccountController {
             @RequestParam double amount) {
 
         accountService.transferFunds(fromAccountId, toAccountId, amount);
-        return ResponseEntity.ok("Transfer successful");
-    }
+        return ResponseEntity.ok("Transfer successful");}
 }
