@@ -106,8 +106,8 @@ public class AccountController extends AccountService{
                            Model model) {
         accountService.transfer(formId, toId, amount, pin);
 
-        Account fromAccount = AccountService.getAccount(formId, pin);
-        Account toAccount = AccountService.getAccount(toId, pin);
+        Account fromAccount = accountService.getAccount(formId, pin);
+        Account toAccount = accountService.getAccount(toId, pin);
 
 
         if(fromAccount.getAccountType().equals("savings")){
