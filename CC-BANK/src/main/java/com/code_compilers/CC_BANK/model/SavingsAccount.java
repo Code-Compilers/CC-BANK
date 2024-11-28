@@ -24,7 +24,7 @@ public class SavingsAccount extends Account {
         return "SavingsAccount{" +
                 "id=" + getId() +
                 ", owner='" + getOwner() + '\'' +
-                ", balance=" + getSavingsBalance() +
+                ", balance=" + getBalance() +
                 ", interestRate=" + interestRate +
                 '}';
     }

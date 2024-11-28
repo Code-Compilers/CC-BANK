@@ -24,21 +24,21 @@ public class AccountService {
 
     @Transactional
     public Account accessAccount(String identifier, String pin) {
-        /*Account account = accountRepository.findByEmail(identifier)
+        Account account = accountRepository.findByEmail(identifier)
                 .or(() -> accountRepository.findById(Long.parseLong(identifier)))
                 .orElseThrow(() -> new AccountNotFoundException("Account not found"));
 
         if (!account.getPin().equals(pin)) {
             throw new IllegalArgumentException("Invalid PIN");
         }
-        return account;*/
+        return account;
         return accountRepository.findByEmail(identifier, pin)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
 
     }
 
     @Transactional
-    public  Account getAccount(Long id, String pin) {
+    public Account getAccount(Long id, String pin) {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new AccountNotFoundException("Account not found"));
         if (!account.getPin().equals(pin)) {
@@ -55,17 +55,17 @@ public class AccountService {
     @Transactional
     public Account deposit(Long id, double amount, String pin) {
         Account account = getAccount(id, pin);
-        account.setSavingsBalance(account.getSavingsBalance() + amount);
+        account.setBalance(account.getBalance() + amount);
         return accountRepository.save(account);
     }
 
     @Transactional
     public Account withdraw(Long id, double amount, String pin) {
         Account account = getAccount(id, pin);
-        if (account.getSavingsBalance() < amount) {
+        if (account.getBalance() < amount) {
             throw new InsufficientFundsException("Insufficient funds for withdrawal");
         }
-        account.setSavingsBalance(account.getSavingsBalance() - amount);
+        account.setBalance(account.getBalance() - amount);
         return accountRepository.save(account);
     }
 
@@ -74,7 +74,7 @@ public class AccountService {
         withdraw(fromId, amount, pin);
         Account toAccount = accountRepository.findById(toId)
                 .orElseThrow(() -> new AccountNotFoundException("Account not found"));
-        toAccount.setSavingsBalance(toAccount.getSavingsBalance() + amount);
+        toAccount.setBalance(toAccount.getBalance() + amount);
         accountRepository.save(toAccount);
     }
 
@@ -84,4 +84,3 @@ public class AccountService {
         accountRepository.delete(account);
     }
 }
-

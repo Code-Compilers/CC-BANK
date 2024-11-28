@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/accounts")
-public class AccountController extends AccountService{
+public class AccountController {
 
     @Autowired
     private AccountService accountService;
@@ -80,14 +80,13 @@ public class AccountController extends AccountService{
         return "account";
     }
 
+
     @PostMapping("/{id}/withdraw")
     public String withdraw(@PathVariable Long id, @RequestParam double amount, @RequestParam String pin, Model model) {
         Account account = accountService.withdraw(id, amount, pin);
         model.addAttribute("account", account);
-
         return "account";
     }
-
 
     //samuel
     //Transfer
@@ -99,55 +98,14 @@ public class AccountController extends AccountService{
 
        Note: This assumes that you have a field in your Account entity to determine whether it's a savings or cheque account
      */
-    @PostMapping("/transfer")
-    public String transfer(@RequestBody Long formId,
-                           @RequestParam Long toId,
-                           @RequestParam double amount,
-                           @RequestParam  String pin,
-                           Model model) {
-        accountService.transfer(formId, toId, amount, pin);
-
-        Account fromAccount = accountService.getAccount(formId, pin);
+    @PostMapping("{id}/transfer")
+    public String transfer(@RequestParam Long fromId, @RequestParam Long toId, @RequestParam double amount, @RequestParam String pin, Model model) {
+        accountService.transfer(fromId, toId, amount, pin);
+        Account fromAccount = accountService.getAccount(fromId, pin);
         Account toAccount = accountService.getAccount(toId, pin);
-
-
-
-        if(fromAccount.getAccountType().equals("savings")){
-            if (fromAccount.getSavingsBalance() >= amount){
-                fromAccount.setSavingsBalance(fromAccount.getSavingsBalance() - amount);
-                toAccount.setChequeBalance(toAccount.getChequeBalance() + amount);
-
-                accountService.transfer(formId, toId, amount, pin);
-                accountService.transfer(formId, toId, amount, pin);
-
-                model.addAttribute("fromAccount", fromAccount);
-                model.addAttribute("toAccount", toAccount);
-
-                return "transfer";
-            }else {
-                model.addAttribute("error", "Insufficient funds");
-                return "transfer";
-            }
-        }else if (fromAccount.getAccountType().equals("cheque")) {
-                if(fromAccount.getChequeBalance() >= amount){
-                    fromAccount.setChequeBalance(fromAccount.getChequeBalance() - amount);
-                    toAccount.setSavingsBalance(toAccount.getSavingsBalance() + amount);
-
-                    accountService.transfer(formId, toId, amount, pin);
-                    accountService.transfer(formId, toId, amount, pin);
-
-                    model.addAttribute("fromAccount", fromAccount);
-                    model.addAttribute("toAccount", toAccount);
-                    return "transfer";
-                }else {
-                    model.addAttribute("error", "Insufficient funds in cheque account");
-                    return "transfer";
-                }
-            }else {
-                model.addAttribute("error", "Invalid account type. The selected account should be either savings or cheque for transfer.");
-            }
+        model.addAttribute("fromAccount", fromAccount);
+        model.addAttribute("toAccount", toAccount);
 
         return "transfer";
-
     }
 }
