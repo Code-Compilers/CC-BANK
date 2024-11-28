@@ -1,9 +1,9 @@
 package com.code_compilers.CC_BANK.controller;
 
-import com.code_compilers.CC_BANK.model.Account;
+
+import org.springframework.stereotype.Controller;
 import com.code_compilers.CC_BANK.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 

@@ -2,9 +2,13 @@ package com.code_compilers.CC_BANK.model;
 
 import jakarta.persistence.Entity;
 
+import jakarta.persistence.Table;
+
 @Entity
+@Table(name = "savings_accounts")
 public class SavingsAccount extends Account {
     private double interestRate;
+
 
     public double getInterestRate() {
         return interestRate;
@@ -13,6 +17,7 @@ public class SavingsAccount extends Account {
     public void setInterestRate(double interestRate) {
         this.interestRate = interestRate;
     }
+
 
     @Override
     public String toString() {
@@ -23,6 +28,7 @@ public class SavingsAccount extends Account {
                 ", interestRate=" + interestRate +
                 '}';
     }
+
 }
 
 
