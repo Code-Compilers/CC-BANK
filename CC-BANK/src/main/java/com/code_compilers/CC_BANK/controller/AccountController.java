@@ -5,6 +5,7 @@ import com.code_compilers.CC_BANK.model.CheckingAccount;
 import com.code_compilers.CC_BANK.model.SavingsAccount;
 import com.code_compilers.CC_BANK.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -58,12 +59,12 @@ public class AccountController {
         Account account;
         try {
             account = accountService.accessAccount(identifier, pin);
+            model.addAttribute("account", account); // Pass account data to the view
+            return "account";
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", "Invalid account number/email or PIN");
             return "index";
         }
-        model.addAttribute("account", account);
-        return "account";
     }
 
     @PostMapping("/{id}/delete")
@@ -97,13 +98,14 @@ public class AccountController {
 
        Note: This assumes that you have a field in your Account entity to determine whether it's a savings or cheque account
      */
-    @PostMapping("/transfer")
+    @PostMapping("{id}/transfer")
     public String transfer(@RequestParam Long fromId, @RequestParam Long toId, @RequestParam double amount, @RequestParam String pin, Model model) {
         accountService.transfer(fromId, toId, amount, pin);
         Account fromAccount = accountService.getAccount(fromId, pin);
         Account toAccount = accountService.getAccount(toId, pin);
         model.addAttribute("fromAccount", fromAccount);
         model.addAttribute("toAccount", toAccount);
+
         return "transfer";
     }
 }

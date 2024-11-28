@@ -32,6 +32,9 @@ public class AccountService {
             throw new IllegalArgumentException("Invalid PIN");
         }
         return account;
+        return accountRepository.findByEmail(identifier, pin)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
+
     }
 
     @Transactional
