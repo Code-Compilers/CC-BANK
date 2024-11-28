@@ -31,7 +31,6 @@ public class AccountService {
         if (!account.getPin().equals(pin)) {
             throw new IllegalArgumentException("Invalid PIN");
         }
-        return account;
         return account;*/
         return accountRepository.findByEmail(identifier, pin)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
