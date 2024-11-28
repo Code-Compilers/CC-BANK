@@ -48,4 +48,13 @@ public class AccountService {
     public List<Account> getAllAccounts() {
         return accountRepository.findAll();
     }
+
+    @Transactional
+    public Account deposit(Long id, double amount, String pin) {
+        Account account = getAccount(id, pin);
+        account.setBalance(account.getBalance() + amount);
+        return accountRepository.save(account);
+    }
+
 }
+

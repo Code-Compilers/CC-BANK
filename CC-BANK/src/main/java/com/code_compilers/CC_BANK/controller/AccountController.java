@@ -65,4 +65,13 @@ public class AccountController {
         model.addAttribute("account", account);
         return "account";
     }
+
+    @PostMapping("/{id}/deposit")
+    public String deposit(@PathVariable Long id, @RequestParam double amount, @RequestParam String pin, Model model) {
+        Account account = accountService.deposit(id, amount, pin);
+        model.addAttribute("account", account);
+        return "account";
+    }
+
 }
+
