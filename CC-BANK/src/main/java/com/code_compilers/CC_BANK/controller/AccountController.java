@@ -1,25 +1,18 @@
 package com.code_compilers.CC_BANK.controller;
 
-
-import com.code_compilers.CC_BANK.service.AccountService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-
-
 import com.code_compilers.CC_BANK.model.Account;
 import com.code_compilers.CC_BANK.model.CheckingAccount;
 import com.code_compilers.CC_BANK.model.SavingsAccount;
 import com.code_compilers.CC_BANK.service.AccountService;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/api/accounts")
-public class AccountController {
+@RequestMapping("/accounts")
+public class AccountController extends AccountService{
 
     @Autowired
     private AccountService accountService;
@@ -66,33 +59,19 @@ public class AccountController {
         Account account;
         try {
             account = accountService.accessAccount(identifier, pin);
-
+            model.addAttribute("account", account); // Pass account data to the view
+            return "account";
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", "Invalid account number/email or PIN");
             return "index";
         }
-        model.addAttribute("account", account);
-        return "account";
     }
 
-
-  //samuel
-
-
-    @PostMapping("/transfer")
-    public ResponseEntity<String> transferFunds(
-            @RequestParam Long fromAccountId,
-            @RequestParam Long toAccountId,
-            @RequestParam double amount) {
-
-        accountService.transferFunds(fromAccountId, toAccountId, amount);
-
-        return ResponseEntity.ok("Transfer successful");
+    @PostMapping("/{id}/delete")
+    public String deleteAccount(@PathVariable Long id, @RequestParam String pin, Model model) {
+        accountService.deleteAccount(id, pin);
+        return "redirect:/";
     }
-
-
-
-
 
     @PostMapping("/{id}/deposit")
     public String deposit(@PathVariable Long id, @RequestParam double amount, @RequestParam String pin, Model model) {
@@ -101,16 +80,74 @@ public class AccountController {
         return "account";
     }
 
-    @PostMapping("/{id}/delete")
+    @PostMapping("/{id}/withdraw")
+    public String withdraw(@PathVariable Long id, @RequestParam double amount, @RequestParam String pin, Model model) {
+        Account account = accountService.withdraw(id, amount, pin);
+        model.addAttribute("account", account);
 
-    public String deleteAccount(@PathVariable Long id, @RequestParam String pin, Model model) {
-
-        accountService.deleteAccount(id, pin);
-
-        return "redirect:/";
-
+        return "account";
     }
 
 
+    //samuel
+    //Transfer
+    //Check if the account numbers belong to the same user as the current user
+    //If the same user it's a transfer between accounts
+    /*
+       If you determine that a transfer is between accounts, which means both accounts belong to the same user
+       then use the two if statement blocks, to check if the account is a savings/cheque account
+
+       Note: This assumes that you have a field in your Account entity to determine whether it's a savings or cheque account
+     */
+    @PostMapping("/transfer")
+    public String transfer(@RequestBody Long formId,
+                           @RequestParam Long toId,
+                           @RequestParam double amount,
+                           @RequestParam  String pin,
+                           Model model) {
+        accountService.transfer(formId, toId, amount, pin);
+
+        Account fromAccount = accountService.getAccount(formId, pin);
+        Account toAccount = accountService.getAccount(toId, pin);
 
 
+
+        if(fromAccount.getAccountType().equals("savings")){
+            if (fromAccount.getSavingsBalance() >= amount){
+                fromAccount.setSavingsBalance(fromAccount.getSavingsBalance() - amount);
+                toAccount.setChequeBalance(toAccount.getChequeBalance() + amount);
+
+                accountService.transfer(formId, toId, amount, pin);
+                accountService.transfer(formId, toId, amount, pin);
+
+                model.addAttribute("fromAccount", fromAccount);
+                model.addAttribute("toAccount", toAccount);
+
+                return "transfer";
+            }else {
+                model.addAttribute("error", "Insufficient funds");
+                return "transfer";
+            }
+        }else if (fromAccount.getAccountType().equals("cheque")) {
+                if(fromAccount.getChequeBalance() >= amount){
+                    fromAccount.setChequeBalance(fromAccount.getChequeBalance() - amount);
+                    toAccount.setSavingsBalance(toAccount.getSavingsBalance() + amount);
+
+                    accountService.transfer(formId, toId, amount, pin);
+                    accountService.transfer(formId, toId, amount, pin);
+
+                    model.addAttribute("fromAccount", fromAccount);
+                    model.addAttribute("toAccount", toAccount);
+                    return "transfer";
+                }else {
+                    model.addAttribute("error", "Insufficient funds in cheque account");
+                    return "transfer";
+                }
+            }else {
+                model.addAttribute("error", "Invalid account type. The selected account should be either savings or cheque for transfer.");
+            }
+
+        return "transfer";
+
+    }
+}

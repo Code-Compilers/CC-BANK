@@ -1,5 +1,23 @@
 // JavaScript code to manage the Bank Account system functionality
 
+//Logout Button
+
+
+function logout() {
+            // Clearing session data
+            localStorage.removeItem('userToken');
+            sessionStorage.removeItem('userToken');
+            document.cookie = "userToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+            // Optional: Show a message before redirecting
+            alert("You have successfully logged out!");
+
+            // Redirect after 1 second (optional delay)
+            setTimeout(function() {
+                window.location.href = '/create-account.html'; // Redirect to login page
+            }, 1000);
+        }
+
 let accountData = {
     name: "Kgomotso",
     surname: "Rakuba",

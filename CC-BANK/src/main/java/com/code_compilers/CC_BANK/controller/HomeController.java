@@ -9,18 +9,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class HomeController {
-        @Autowired
-        private AccountService accountService;
-        // Serve the signup.html page at the root URL
-        @GetMapping("/")
-        public String showSignUpPage() {
-            return "Account";
-        }
+
+    @Autowired
+    private AccountService accountService;
 
     @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("accounts");
         return "index";
     }
+
+    @GetMapping("/account")
+    public String account(Model model) {
+        model.addAttribute("account");
+        return "account";
     }
+
+}
+
 

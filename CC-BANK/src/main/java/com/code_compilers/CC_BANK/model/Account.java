@@ -2,21 +2,6 @@ package com.code_compilers.CC_BANK.model;
 
 import jakarta.persistence.*;
 
-<<<<<<< HEAD
-
-@Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Account {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String owner;
-    private double balance;
-    private String accountType;
-
-=======
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Account {
@@ -26,14 +11,18 @@ public abstract class Account {
     private String owner;
     private String email;
     private String cellNumber;
-    private double balance;
+    private double SavingsBalance;
+    private double chequeBalance;
     private String pin;
     private String accountType;
 
-
-
->>>>>>> fbdddc27a17510f87eef5eba4bdf5daeb293f192
     // Getters and Setters
+    public double getChequeBalance() {
+        return chequeBalance;
+    }
+    public void setChequeBalance(double chequeBalance) {
+        this.chequeBalance = chequeBalance;
+    }
     public Long getId() {
         return id;
     }
@@ -50,8 +39,6 @@ public abstract class Account {
         this.owner = owner;
     }
 
-<<<<<<< HEAD
-=======
     public String getEmail() {
         return email;
     }
@@ -68,17 +55,14 @@ public abstract class Account {
         this.cellNumber = cellNumber;
     }
 
->>>>>>> fbdddc27a17510f87eef5eba4bdf5daeb293f192
-    public double getBalance() {
-        return balance;
+    public double getSavingsBalance() {
+        return SavingsBalance;
     }
 
-    public void setBalance(double balance) {
-        this.balance = balance;
+    public void setSavingsBalance(double savingsBalance) {
+        this.SavingsBalance = savingsBalance;
     }
 
-<<<<<<< HEAD
-=======
     public String getPin() {
         return pin;
     }
@@ -87,7 +71,6 @@ public abstract class Account {
         this.pin = pin;
     }
 
->>>>>>> fbdddc27a17510f87eef5eba4bdf5daeb293f192
     public String getAccountType() {
         return accountType;
     }
