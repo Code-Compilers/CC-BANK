@@ -35,7 +35,7 @@ public class AccountService {
     }
 
     @Transactional
-    public static Account getAccount(Long id, String pin) {
+    public  Account getAccount(Long id, String pin) {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new AccountNotFoundException("Account not found"));
         if (!account.getPin().equals(pin)) {
@@ -57,7 +57,7 @@ public class AccountService {
     }
 
     @Transactional
-    public static Account withdraw(Long id, double amount, String pin) {
+    public Account withdraw(Long id, double amount, String pin) {
         Account account = getAccount(id, pin);
         if (account.getSavingsBalance() < amount) {
             throw new InsufficientFundsException("Insufficient funds for withdrawal");

@@ -18,6 +18,13 @@ public class HomeController {
         model.addAttribute("accounts");
         return "index";
     }
+
+    @GetMapping("/account")
+    public String account(Model model) {
+        model.addAttribute("account");
+        return "account";
+    }
+
 }
 
 
