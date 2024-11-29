@@ -183,6 +183,7 @@ div[th\\:if] {
     font-size: 1rem;
 }
 
+
 /* Footer Styling */
 footer {
     text-align: center;
@@ -342,3 +343,4 @@ nav {
 .alert button:hover {
     background-color: #cc0000;
 }
+

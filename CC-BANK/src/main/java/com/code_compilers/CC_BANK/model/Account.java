@@ -3,16 +3,15 @@ package com.code_compilers.CC_BANK.model;
 import jakarta.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Account {
+public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String owner;
     private String email;
     private String cellNumber;
-    private double balance;
     private String pin;
+    private double balance = 0.0;
 
     // Getters and Setters
     public Long getId() {
@@ -47,14 +46,6 @@ public abstract class Account {
         this.cellNumber = cellNumber;
     }
 
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
-
     public String getPin() {
         return pin;
     }
@@ -62,5 +53,12 @@ public abstract class Account {
     public void setPin(String pin) {
         this.pin = pin;
     }
-}
 
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+}
