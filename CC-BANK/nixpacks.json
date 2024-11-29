@@ -1,0 +1,13 @@
+{
+  "phases": {
+    "install": {
+      "cmds": ["mvn clean install"]
+    },
+    "build": {
+      "cmds": ["mvn package -DskipTests"]
+    },
+    "start": {
+      "cmd": "java -jar target/*.jar"
+    }
+  }
+}
