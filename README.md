@@ -120,7 +120,13 @@ Once the application is running, you can access it in your web browser at `http:
 ## Styles
 Basic styling is provided in `src/main/resources/static/css/style.css`.
 
+##Demo Video
+
+https://github.com/user-attachments/assets/dd5de461-7409-4205-87cf-d609f98811aa
+
 ## License
 This project is licensed under the MIT License. See the LICENSE file for more information.
 
 ---
+
+
