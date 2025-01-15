@@ -9,7 +9,6 @@
 <body>
 <header>
     <h1>Create Account</h1>
-    <a href="/" class="back-button">Back</a>
 </header>
 <main>
     <form th:action="@{/accounts/create}" method="post">
@@ -41,7 +40,8 @@
             <input type="password" id="pin" name="pin" pattern="\d{4}" title="Please enter a 4-digit PIN" required>
         </div>
         <div>
-            <button type="submit">Create Account</button>
+            <button type="submit" class="btn">Create Account</button>
+            <button type="button" class="btn" onclick="window.location.href='/'">Cancel</button>
         </div>
         <div th:if="${error}">
             <p th:text="${error}"></p>
@@ -53,4 +53,3 @@
 </footer>
 </body>
 </html>
-
